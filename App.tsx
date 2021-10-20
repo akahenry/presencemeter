@@ -53,7 +53,7 @@ const Main = ({ navigation, route}) => {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => setClasses(addClass(classes))}
+        onPress={() => navigation.navigate('AddClass',{ onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); }})}
       />
     </View>
   );

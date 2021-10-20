@@ -30,7 +30,7 @@ const CustomTheme = {
   colors: {
     ...DefaultTheme.colors,
     primary: '#17bebb',
-  }
+  },
 };
 
 export default CustomTheme;

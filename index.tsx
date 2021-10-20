@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import App from './App';
 import EditClass from './EditClass';
 import CustomTheme from './customTheme';
+import AddClass from './AddClass';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,10 @@ export default function Main() {
               <Stack.Screen
                 name="Home"
                 component={App}
+                />
+              <Stack.Screen
+                name="AddClass"
+                component={AddClass}
                 />
               <Stack.Screen
                 name="EditClass"
