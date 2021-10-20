@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Appbar, Avatar } from 'react-native-paper';
 
-const EditClass = ({ navigation }) => {
+const EditClass = ({ route, navigation }) => {
   return (
     <View style={styles.mainView}>
         <Appbar.Header style={styles.appbar} statusBarHeight={5}>
@@ -10,8 +10,8 @@ const EditClass = ({ navigation }) => {
             <Appbar.Content title="Presencemeter" subtitle="Aula" />
             <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")} />
         </Appbar.Header>
-        <Text>
-        Teste usando parametros
+        <Text style={styles.text}>
+        {route.params.obj.name}
         </Text>
     </View>
   );
@@ -34,4 +34,7 @@ const styles = StyleSheet.create({
     cog: {
         marginTop: 15,
     },
+    text: {
+        color: '#000000'
+    }
 });

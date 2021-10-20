@@ -15,7 +15,7 @@ const ClassCard = (props) => {
   const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
 
   return (
-    <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { name: 'Teste' })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
+    <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { obj: props.obj })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
       <Card.Title title={props.obj.name}/>
     </Card>
