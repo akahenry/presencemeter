@@ -43,5 +43,11 @@ export class Class {
     misses: number;
     maxMisses: number;
 
-    constructor({ name, intervals, gpsEnabled, misses, maxMisses }: { name: string; intervals: DayHourInterval[]; gpsEnabled: boolean; misses: number; maxMisses: number; }) { }
+    constructor(name: String, intervals: DayHourInterval[] = [], gpsEnabled: boolean = false, misses: number = 0, maxMisses: number = 0) {
+        this.name = name;
+        this.intervals = intervals;
+        this.gpsEnabled = gpsEnabled;
+        this.misses = misses;
+        this.maxMisses = maxMisses;
+    }
 }
