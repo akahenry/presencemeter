@@ -1,6 +1,5 @@
 import React from 'react';
-import { Appbar, Avatar, Card, FAB, Portal, Modal, IconButton } from 'react-native-paper';
-// import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Appbar, Avatar, Card, FAB, IconButton } from 'react-native-paper';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -16,7 +15,7 @@ const ClassCard = (props) => {
   const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
 
   return (
-    <Card key={props.index} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
+    <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { name: 'Teste' })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
       <Card.Title title={props.obj.name}/>
     </Card>
@@ -45,7 +44,7 @@ const Main = ({ navigation, route}) => {
         {
           classes.map((c, i) => {
             return (
-              <ClassCard key={i} obj={c} index={i} onPress={() => navigation.navigate('EditClass', { name: 'Teste' })}/>
+              <ClassCard key={i} obj={c} index={i} navigation={navigation} />
             );
           })
         }
