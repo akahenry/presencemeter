@@ -1,26 +1,33 @@
 import React from 'react';
-import { Appbar, Avatar, Card, FAB, Portal, Modal, DarkTheme } from 'react-native-paper';
+import { Appbar, Avatar, Card, FAB, Portal, Modal, IconButton } from 'react-native-paper';
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
+import * as cls from './class';
+
 const addClass = (classes) => {
-  const newClass = {
-    name: 'Português',
-    subtitle: 'Alguma informação sobre a materia',
-  }
+  let newClass = new cls.Class('Inglês');
 
   return classes.concat(newClass);
+}
+
+const ClassCard = (props) => {
+  const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
+
+  return (
+    <Card key={props.index} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
+      <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
+      <Card.Title title={props.obj.name}/>
+    </Card>
+  );
 }
 
 const Main = ({ navigation, route}) => {
   const [active, setActive] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  const defaultClass = {
-    name: 'Português',
-    subtitle: 'Alguma informação sobre a materia',
-  }
+  const defaultClass = new cls.Class('Português');
   const [classes, setClasses] = React.useState([
     defaultClass,
   ]);
@@ -38,10 +45,7 @@ const Main = ({ navigation, route}) => {
         {
           classes.map((c, i) => {
             return (
-              <Card key={i} style={styles.card} onPress={() => navigation.navigate('EditClass', { name: 'Teste' })} mode="outlined">
-                {/* <IconButton style={styles.geoIcon} icon="map-marker" size={20} onPress={() => console.log('Pressed')} /> */}
-                <Card.Title title={c.name} subtitle={c.subtitle}/>
-              </Card>
+              <ClassCard key={i} obj={c} index={i} onPress={() => navigation.navigate('EditClass', { name: 'Teste' })}/>
             );
           })
         }
@@ -64,6 +68,7 @@ const styles = StyleSheet.create({
   },
   appbar: {
     marginBottom: 15,
+    backgroundColor: '#17bebb'
   },
   avatar: {
     marginLeft: 10,
@@ -75,9 +80,17 @@ const styles = StyleSheet.create({
   cardsView: {
     margin: 20,
   },
-  card: {
+  cardPurple: {
     minHeight: 100,
     marginBottom: 15,
+    backgroundColor: '#d1ccdc',
+    borderColor: '#000000'
+  },
+  cardPink: {
+    minHeight: 100,
+    marginBottom: 15,
+    backgroundColor: '#f5edf0',
+    borderColor: '#000000'
   },
   fab: {
     position: 'absolute',
@@ -88,10 +101,16 @@ const styles = StyleSheet.create({
   containerStyle: {
     margin: 20,
     padding: 30,
-    backgroundColor: DarkTheme.colors.background,
+    backgroundColor: '#FAFAFA',
     justifyContent: 'center',
     alignContent: 'center',
     minHeight: 400,
     minWidth: 360,
   },
+  geoIconEnabled: {
+    opacity: 1
+  },
+  geoIconDisabled: {
+    opacity: 0.2
+  }
 });
