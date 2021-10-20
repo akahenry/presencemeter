@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
   },
   appbar: {
     marginBottom: 15,
-    backgroundColor: '#17bebb'
   },
   avatar: {
     marginLeft: 10,
