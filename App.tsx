@@ -13,7 +13,7 @@ const addClass = (classes) => {
   return classes.concat(newClass);
 }
 
-const Main = () => {
+const Main = ({ navigation, route}) => {
   const [active, setActive] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -27,11 +27,6 @@ const Main = () => {
 
   return (
     <View style={styles.mainView}>
-      <Portal>
-        <Modal visible={modalVisible} onDismiss={() => setModalVisible(false)} contentContainerStyle={styles.containerStyle}>
-          <Text>Example Modal.  Click outside this area to heh.</Text>
-        </Modal>
-      </Portal>
 
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
         <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
@@ -43,7 +38,7 @@ const Main = () => {
         {
           classes.map((c, i) => {
             return (
-              <Card key={i} style={styles.card} onPress={() => setModalVisible(true)} mode="outlined">
+              <Card key={i} style={styles.card} onPress={() => navigation.navigate('EditClass', { name: 'Teste' })} mode="outlined">
                 {/* <IconButton style={styles.geoIcon} icon="map-marker" size={20} onPress={() => console.log('Pressed')} /> */}
                 <Card.Title title={c.name} subtitle={c.subtitle}/>
               </Card>
