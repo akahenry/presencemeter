@@ -63,7 +63,8 @@ const FormLocation = (props) => {
 const FormTime = (props) => {
     const [showDropDown, setShowDropDown] = React.useState(false);
     const [day, setDay] = React.useState("");
-    const [hours, setHours] = React.useState("");
+    const [hourStart, setHourStart] = React.useState("");
+    const [hourEnd, setHourEnd] = React.useState("");
     const dayList = [
         {
         label: "Segundas",
@@ -112,13 +113,19 @@ const FormTime = (props) => {
                     />
                     <TextInput
                         mode='outlined'
-                        value={hours}
-                        onChangeText={text => setHours(text)}
-                        label='Horário'
+                        value={hourStart}
+                        onChangeText={text => setHourStart(text)}
+                        label='Horário de Início'
+                    />
+                    <TextInput
+                        mode='outlined'
+                        value={hourEnd}
+                        onChangeText={text => setHourEnd(text)}
+                        label='Horário de Término'
                     />
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={() => {props.setVisible(false); props.onAccept({day, hours}); }}>Adicionar</Button>
+                    <Button onPress={() => {props.setVisible(false); props.onAccept({day, hourStart, hourEnd}); }}>Adicionar</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>
@@ -154,7 +161,7 @@ const AddClass = ({ route, navigation }) => {
                     {
                         schedule.map((s, i) => {
                             return (
-                            <List.Item style={styles.scheduleListItem} key={i} title={`${s.day} - ${s.hours}`} left={() => <List.Icon icon="calendar-check" />} />
+                            <List.Item style={styles.scheduleListItem} key={i} title={`${s.day}, ${s.hourStart} - ${s.hourEnd}`} left={() => <List.Icon icon="calendar-check" />} />
                             );
                         })
                     }
