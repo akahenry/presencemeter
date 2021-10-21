@@ -1,6 +1,6 @@
 import React from 'react';
 import { Appbar, Avatar, Card, FAB, IconButton } from 'react-native-paper';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import * as cls from './class';
@@ -17,7 +17,7 @@ const ClassCard = (props) => {
   return (
     <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { obj: props.obj })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
-      <Card.Title title={props.obj.name}/>
+      <Card.Title titleStyle={styles.cardTitle} title={props.obj.name}/>
     </Card>
   );
 }
@@ -36,7 +36,7 @@ const Main = ({ navigation, route}) => {
 
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
         <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
-        <Appbar.Content title="Presencemeter" subtitle="Main Screen" />
+        <Appbar.Content titleStyle={styles.title} title="Presencemeter" />
         <Appbar.Action style={styles.cog} icon="cog" onPress={() => setClasses([defaultClass])} />
       </Appbar.Header>
 
@@ -67,6 +67,11 @@ const styles = StyleSheet.create({
   },
   appbar: {
     marginBottom: 15,
+    height: 100
+  },
+  title: {
+    fontFamily: 'Roboto-Regular',
+    fontWeight: 'bold'
   },
   avatar: {
     marginLeft: 10,
@@ -79,16 +84,27 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   cardPurple: {
-    minHeight: 100,
+    height: 148,
     marginBottom: 15,
     backgroundColor: '#d1ccdc',
-    borderColor: '#000000'
+    borderColor: '#000000',
+    borderRadius: 20,
+    width: 289,
+    alignSelf: 'center'
   },
   cardPink: {
-    minHeight: 100,
+    height: 148,
     marginBottom: 15,
     backgroundColor: '#f5edf0',
-    borderColor: '#000000'
+    borderColor: '#000000',
+    borderRadius: 20,
+    width: 289,
+    alignSelf: 'center'
+  },
+  cardTitle: {
+    marginBottom: 150,
+    alignSelf: 'center',
+    fontFamily: 'Roboto-Regular'
   },
   fab: {
     position: 'absolute',
