@@ -43,6 +43,9 @@ export class Class {
     misses: number;
     maxMisses: number;
     region: Object;
+    id: number;
+
+    static currentId: number = 0;
 
     constructor(name: String, intervals: DayHourInterval[], gpsEnabled: boolean, misses: number, maxMisses: number, region: Object) {
         this.name = name;
@@ -51,7 +54,8 @@ export class Class {
         this.misses = misses;
         this.maxMisses = maxMisses;
         this.region = region;
-
-        console.log("maxMixes: " + maxMisses);
+        this.id = Class.currentId;
+        
+        Class.currentId += 1;
     }
 }

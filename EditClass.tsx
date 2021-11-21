@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Appbar, Avatar, Button, FAB } from 'react-native-paper';
+import { Appbar, Avatar, Button, FAB, Dialog, Portal, Text } from 'react-native-paper';
 
 import { FormText, FormLocation, FormNumber } from './forms';
 
@@ -11,6 +11,26 @@ const saveClass = (obj, name, maxMisses, region, schedule) => {
   obj.schedule = schedule;
 }
 
+const DeleteConfirmDialog = (props) => {
+    return (
+        <Portal>
+            <Dialog visible={props.visible} onDismiss={() => props.setVisible(false)}>
+                <Dialog.Content>
+                    <Text style={styles.deleteConfirmText} >Tem certeza que deseja excluir a classe? Esta ação é irreversível.</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={() => {props.setVisible(false); }}>
+                        Cancelar
+                    </Button>
+                    <Button color={styles.deleteButtonColor} onPress={() => {props.setVisible(false); props.onDelete(); }}>
+                        Excluir
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    );
+}
+
 const EditClass = ({ route, navigation }) => {
     const [name, setName] = React.useState(route.params.obj.name);
     const [editMode, setEditMode] = React.useState(false);
@@ -18,6 +38,8 @@ const EditClass = ({ route, navigation }) => {
     const [region, setRegion] = React.useState(route.params.obj.region);
     const [schedule, setSchedule] = React.useState([]);
 
+    const [deleteDialogVisible, setDeleteDialogVisible] = React.useState(false);
+    
     return (
         <View style={styles.mainView}>
             <Appbar.Header style={styles.appbar} statusBarHeight={5}>
@@ -26,6 +48,10 @@ const EditClass = ({ route, navigation }) => {
                 <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")}/>
             </Appbar.Header>
             <ScrollView style={styles.page}>
+                <DeleteConfirmDialog
+                    visible={deleteDialogVisible}
+                    onDelete={() => { route.params.onDelete(route.params.obj); navigation.goBack(); } }
+                    setVisible={setDeleteDialogVisible} />
                 <FormText label="Nome" defaultText={name} disabled={!editMode} style={styles.formText} onChange={setName} />
                 <FormLocation label='Localização' enabled={editMode} defaultRegion={region} style={styles.formText} onChange={setRegion} />
                 <FormNumber label='Faltas máximas' defaultText={maxMisses} disabled={!editMode} style={[styles.formText, styles.faltasMaximas]} onChange={ () => setMaxMisses } />
@@ -41,7 +67,7 @@ const EditClass = ({ route, navigation }) => {
                         <Button icon="pencil" mode="outlined" style={styles.editButton} onPress={() => setEditMode(true)}>
                             Editar
                         </Button>
-                        <Button icon="delete" mode="contained" color="#d81a1a" style={styles.deleteButton} onPress={() => console.log('Delete Pressed')}>
+                        <Button icon="delete" mode="contained" color={styles.deleteButtonColor} style={styles.deleteButton} onPress={() => setDeleteDialogVisible(true) }>
                             Excluir
                         </Button>
                     </View>
@@ -93,5 +119,9 @@ const styles = StyleSheet.create({
     deleteButton: {
         flex: 1,
         marginLeft: 5,
-    }
+    },
+    deleteConfirmText: {
+        fontSize: 19
+    },
+    deleteButtonColor: "#d81a1a",
 });

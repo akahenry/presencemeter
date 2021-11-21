@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { TextInput, Dialog, Portal, Button } from 'react-native-paper';
 import DropDown from "react-native-paper-dropdown";

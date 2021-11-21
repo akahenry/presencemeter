@@ -10,10 +10,10 @@
 
 - [ ] Tela de visualização e edição de classe
   - [x] Botão de editar classe
-  - [ ] Botão de deletar classe
+  - [x] Botão de deletar classe
   - [x] Nome
-  - [ ] Mapa
-  - [ ] Faltas máximas
+  - [x] Mapa
+  - [x] Faltas máximas
   - [ ] Lista de horários (permite remoção e adição de horários quando em modo edição)
   - [ ] Botão de marcar presença (esconde quando em modo edição)
   - [x] Botão de salvar (quando em modo edição)
