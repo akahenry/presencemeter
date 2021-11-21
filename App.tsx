@@ -3,7 +3,6 @@ import { Appbar, Avatar, Card, FAB, IconButton } from 'react-native-paper';
 import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
-import BackgroundTask from 'react-native-background-task';
 
 import * as cls from './class';
 
@@ -70,24 +69,6 @@ const Main = ({ navigation, route }) => {
     }
 
     requestLocationPermission();
-    BackgroundTask.define(() => {
-      console.log("Loucurada né pai");
-      Geolocation.getCurrentPosition((info) => {
-        let now = new Date();
-        classes.forEach(cls => {
-          cls.intervals.forEach(interval => {
-            if (interval.begin.day.valueOf() == now.getDay() && interval.begin.time.hour <= now.getHours() && interval.begin.time.minutes <= now.getMinutes() && interval.end.time.hour >= now.getHours() && interval.end.time.minutes >= now.getMinutes()) {
-              let distance = (a, b, x, y) => Math.sqrt(Math.pow(a - x, 2) + Math.pow(b - y, 2));
-              if (distance(info.coords.latitude, info.coords.longitude, cls.region.latitude, cls.region.longitude) > cls.delta) {
-                cls.misses++;
-              }
-            }
-          });
-        });
-      BackgroundTask.finish();
-      });
-    });
-    BackgroundTask.schedule();
   }, [])
 
   return (
