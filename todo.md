@@ -10,7 +10,7 @@
 
 - [ ] Tela de visualização e edição de classe
   - [x] Botão de editar classe
-  - [x] Botão de deletar classe
+  - [ ] Botão de deletar classe
   - [x] Nome
   - [ ] Mapa
   - [ ] Faltas máximas
