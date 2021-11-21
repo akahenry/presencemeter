@@ -4,6 +4,8 @@ import MapView, { Marker } from 'react-native-maps';
 import { TextInput, Dialog, Portal, Button } from 'react-native-paper';
 import DropDown from "react-native-paper-dropdown";
 
+import * as cls from './class';
+
 export const FormText = (props) => {
     const [text, setText] = React.useState(props.defaultText);
 
@@ -46,6 +48,72 @@ export const FormNumber = (props) => {
     );
 };
 
+export const FormHourMinute = (props) => {
+    const [hours, setHours] = React.useState(0);
+    const [minutes, setMinutes] = React.useState(0);
+
+    React.useEffect(() => {
+        props.onChange(hours, minutes);
+    }, [hours, minutes]);
+
+    return (
+        <View style={props.style}>
+            <Text style={styles.formLabel}>{props.label}</Text>
+            <View style={{flexDirection:"row"}}>
+            <TextInput
+                style={{flex:1, marginRight:5}}
+                mode='outlined'
+                value={hours.toString()}
+                disabled={props.disabled}
+                onChangeText={text => { 
+                    let nr = parseInt(text);
+                    if (Number.isInteger(nr)) {
+                        let max = 23;
+                        let min = 0;
+                        if (nr >= min) {
+                            if (nr <= max) {
+                                setHours(nr); 
+                            } else {
+                                setHours(max);
+                            }
+                        } else {
+                            setHours(min);
+                        }
+                    } else {
+                        setHours(0);
+                    }
+                }}
+            />
+            <Text style={{fontSize:50}}>:</Text>
+            <TextInput
+                style={{flex:1, marginLeft:5}}
+                mode='outlined'
+                value={minutes.toString()}
+                disabled={props.disabled}
+                onChangeText={text => { 
+                    let nr = parseInt(text);
+                    if (Number.isInteger(nr)) {
+                        let max = 59;
+                        let min = 0;
+                        if (nr >= min) {
+                            if (nr <= max) {
+                                setMinutes(nr); 
+                            } else {
+                                setMinutes(max);
+                            }
+                        } else {
+                            setMinutes(min);
+                        }
+                    } else {
+                        setMinutes(0);
+                    }
+                }}
+            />
+            </View>
+        </View>
+    );
+};
+
 FormNumber.defaultProps = {
   defaultText: '',
   disabled: false,
@@ -84,37 +152,39 @@ FormLocation.defaultProps = {
 
 export const FormTime = (props) => {
     const [showDropDown, setShowDropDown] = React.useState(false);
-    const [day, setDay] = React.useState("");
-    const [hourStart, setHourStart] = React.useState("");
-    const [hourEnd, setHourEnd] = React.useState("");
+    const [day, setDay] = React.useState(cls.Weekday.Sunday);
+    const [hourStart, setHourStart] = React.useState(0);
+    const [minuteStart, setMinuteStart] = React.useState(0);
+    const [hourEnd, setHourEnd] = React.useState(0);
+    const [minuteEnd, setMinuteEnd] = React.useState(0);
     const dayList = [
         {
         label: "Segundas",
-        value: "Segundas",
+        value: cls.Weekday.Monday,
         },
         {
         label: "Terças",
-        value: "Terças",
+        value: cls.Weekday.Tuesday,
         },
         {
         label: "Quartas",
-        value: "Quartas",
+        value: cls.Weekday.Wednesday,
         },
         {
         label: "Quintas",
-        value: "Quintas",
+        value: cls.Weekday.Thursday,
         },
         {
         label: "Sextas",
-        value: "Sextas",
+        value: cls.Weekday.Friday,
         },
         {
         label: "Sábados",
-        value: "Sábados",
+        value: cls.Weekday.Saturday,
         },
         {
         label: "Domingos",
-        value: "Domingos",
+        value: cls.Weekday.Sunday,
         },
     ];
 
@@ -133,21 +203,17 @@ export const FormTime = (props) => {
                         setValue={setDay}
                         list={dayList}
                     />
-                    <TextInput
-                        mode='outlined'
-                        value={hourStart}
-                        onChangeText={text => setHourStart(text)}
-                        label='Horário de Início'
+                    <FormHourMinute
+                        onChange={(hour, minutes) => {setHourStart(hour); setMinuteStart(minutes)}}
+                        label='Horário de início'
                     />
-                    <TextInput
-                        mode='outlined'
-                        value={hourEnd}
-                        onChangeText={text => setHourEnd(text)}
-                        label='Horário de Término'
+                     <FormHourMinute
+                        onChange={(hour, minutes) => {setHourEnd(hour); setMinuteEnd(minutes)}}
+                        label='Horário de fim'
                     />
                 </Dialog.Content>
                 <Dialog.Actions>
-                    <Button onPress={() => {props.setVisible(false); props.onAccept({day, hourStart, hourEnd}); }}>Adicionar</Button>
+                    <Button onPress={() => {props.setVisible(false); props.onAccept(new cls.DayHourInterval(new cls.DayHour(day, new cls.Hour(hourStart, minuteStart)), new cls.DayHour(day, new cls.Hour(hourEnd, minuteEnd)))); }}>Adicionar</Button>
                 </Dialog.Actions>
             </Dialog>
         </Portal>

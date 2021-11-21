@@ -7,26 +7,31 @@ import ClassCard from './App';
 
 const ShowSchedulesClass = ({ route, navigation }) => {
     const [expanded, setExpanded] = React.useState(true);
-
     const handlePress = () => setExpanded(!expanded);
+    const presenceListMock = [{presence_id: 1, time: "10:30:12"}, {presence_id: 2, time: "10:37:49"} ];
     return (
         <View style={styles.mainView}>
             <Appbar.Header style={styles.appbar} statusBarHeight={5}>
-                <Appbar.Content title="Presencemeter" subtitle="Editar Classe" />
+                <Appbar.Content title="Presencemeter" subtitle="Lista de presenças" />
             </Appbar.Header>
             <ScrollView style={styles.page}>
-                <List.Section title="Accordions">
-                    {
-                       route.params.classes.map((m, i) => {
-                            return (
-                                <List.Accordion title={m.name} left={props => <List.Icon {...props} icon="folder" />}>
-                                    {/* Listar presenças já marcadas dessa classe aqui.*/}
-                                    {/* Lembre que é necessário uma key diferente pra cada List.Item */}
-                                    <List.Item title="Primeiro item da lista de presenças já marcadas" />
-                                </List.Accordion>
-                            );
-                       })
-                    }
+                <List.Section>
+                {
+                    route.params.classes.map((c, i) => {
+                        return (
+                            <List.Accordion title={c.name} left={props => <List.Icon {...props} icon="folder" />}>
+                            {
+                                // Substituir presenceListMock pela lista de horários do c
+                                presenceListMock.map((p, i) => {
+                                    return (
+                                        <List.Item title={p.time} key={i}/>
+                                    );
+                                })
+                            }                         
+                            </List.Accordion>
+                        );
+                    })
+                }
                 </List.Section>
             </ScrollView>
         </View>

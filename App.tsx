@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appbar, Avatar, Card, FAB, IconButton } from 'react-native-paper';
+import { Appbar, Card, FAB, IconButton } from 'react-native-paper';
 import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
@@ -75,9 +75,8 @@ const Main = ({ navigation, route }) => {
     <View style={styles.mainView}>
 
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
-        <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
-        <Appbar.Content titleStyle={styles.title} title="Presencemeter" />
         <Appbar.Action style={styles.menu} icon="clock-check" onPress={() => navigation.navigate('ShowSchedulesClass', { classes: classes })} />
+        <Appbar.Content titleStyle={styles.title} title="Presencemeter" />       
       </Appbar.Header>
 
       <ScrollView style={styles.cardsView}>
@@ -113,12 +112,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontWeight: 'bold'
   },
-  avatar: {
-    marginLeft: 10,
-    marginTop: 5,
-  },
   menu: {
-    marginTop: 15,
+    marginLeft: 10,
+    marginTop: 5
   },
   cardsView: {
     margin: 20,

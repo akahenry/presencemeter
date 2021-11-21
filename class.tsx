@@ -8,12 +8,46 @@ export enum Weekday {
     Saturday,
 }
 
+export function weekdayToString(day: Weekday) {
+    switch (day) {
+        case Weekday.Sunday:
+            return "Domingo";
+            break;
+        case Weekday.Monday:
+            return "Segunda";
+            break;
+        case Weekday.Tuesday:
+            return "Terça";
+            break;
+        case Weekday.Wednesday:
+            return "Quarta";
+            break;
+        case Weekday.Thursday:
+            return "Quinta";
+            break;
+        case Weekday.Friday:
+            return "Sexta";
+            break;
+        case Weekday.Saturday:
+            return "Sábado";
+            break;
+    
+        default:
+            break;
+    }
+    return "";
+}
+
 export class Hour {
     hour: number;
     minutes: number;
     constructor(hour: number, minutes: number) {
         this.hour = hour;
         this.minutes = minutes;
+    }
+
+    toString() : string {
+        return `${this.hour}:${this.minutes}`;
     }
 }
 
@@ -24,6 +58,10 @@ export class DayHour {
         this.day = day;
         this.time = time;
     }
+
+    toString() : string {
+        return `${weekdayToString(this.day)}, ${this.time.toString()}`;
+    }
 }
 
 export class DayHourInterval {
@@ -33,6 +71,10 @@ export class DayHourInterval {
     constructor(begin: DayHour, end: DayHour) {
         this.begin = begin;
         this.end = end;
+    }
+
+    toString() : string {
+        return `${this.begin.toString()} - ${this.end.toString()}`;
     }
 }
 

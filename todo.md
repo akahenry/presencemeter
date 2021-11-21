@@ -18,7 +18,7 @@
   - [x] Botão de salvar (quando em modo edição)
 - [ ] Presença usando tempo e geolocalização
 - [ ] Tela de horários de cada aula
-  - [x] Botão pra trocar pra essa tela (Substituí o cog)
+  - [x] Botão pra trocar pra essa tela (Substituí o avatar, deletei o cog)
   - [x] Listagem de classes
   - [ ] Lista dos horários já marcados para cada classe
   - [x] Transformar em dropdowns
@@ -28,6 +28,6 @@
 - [ ] Tirar warnings ou fazer publish do apk pra esconder os warnings
 - [ ] Persistência dos dados
 - [ ] Notificação perguntando se está na aula (quando chegar a hora da aula e estiver longe da classe ou GPS desligado)
-- [ ] Seleção de horário mais apropriada
+- [x] Seleção de horário mais apropriada
 - [ ] Tirar delay do mapa
 - [ ] Ordenar cards usando algum critério mais inteligente

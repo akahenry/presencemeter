@@ -32,9 +32,9 @@ const AddClass = ({ route, navigation }) => {
                 <List.Section>
                     <Text style={styles.formLabel}>Horários</Text>
                     {
-                        schedule.map((s, i) => {
+                        schedule.map((s: cls.DayHourInterval, i) => {
                             return (
-                            <List.Item style={styles.scheduleListItem} key={i} title={`${s.day}, ${s.hourStart} - ${s.hourEnd}`} left={() => <List.Icon icon="calendar-check" />} />
+                            <List.Item style={styles.scheduleListItem} key={i} title={`${s.begin.toString()} - ${s.end.toString()}`} left={() => <List.Icon icon="calendar-check" />} />
                             );
                         })
                     }
