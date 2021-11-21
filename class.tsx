@@ -44,17 +44,14 @@ export class Class {
     maxMisses: number;
     region: Object;
 
-    constructor(name: String, intervals: DayHourInterval[] = [], gpsEnabled: boolean = false, misses: number = 0, maxMisses: number = 0, region: Object = {
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    }) {
+    constructor(name: String, intervals: DayHourInterval[], gpsEnabled: boolean, misses: number, maxMisses: number, region: Object) {
         this.name = name;
         this.intervals = intervals;
         this.gpsEnabled = gpsEnabled;
         this.misses = misses;
         this.maxMisses = maxMisses;
         this.region = region;
+
+        console.log("maxMixes: " + maxMisses);
     }
 }

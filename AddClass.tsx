@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     faltasMaximas: {
-        marginTop: 150
+        marginTop: 130
     },
     scheduleListItem: {
         marginBottom: -12,

@@ -2,8 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, Avatar, Button, FAB } from 'react-native-paper';
 
-import * as cls from './class';
-import { FormText } from './forms';
+import { FormText, FormLocation, FormNumber } from './forms';
 
 const saveClass = (obj, name, maxMisses, region, schedule) => {
   obj.name = name;
@@ -15,14 +14,9 @@ const saveClass = (obj, name, maxMisses, region, schedule) => {
 const EditClass = ({ route, navigation }) => {
     const [name, setName] = React.useState(route.params.obj.name);
     const [editMode, setEditMode] = React.useState(false);
-    const [maxMisses, setMaxMisses] = React.useState(0);
-    const [region, setRegion] = React.useState({
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    });
-    const [schedule, setSchedule] = React.useState([])
+    const [maxMisses, setMaxMisses] = React.useState(route.params.obj.maxMisses);
+    const [region, setRegion] = React.useState(route.params.obj.region);
+    const [schedule, setSchedule] = React.useState([]);
 
     return (
         <View style={styles.mainView}>
@@ -32,7 +26,9 @@ const EditClass = ({ route, navigation }) => {
                 <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")}/>
             </Appbar.Header>
             <ScrollView style={styles.page}>
-                <FormText defaultText={name} disabled={!editMode} label="Nome" style={styles.formText} onChange={setName} />
+                <FormText label="Nome" defaultText={name} disabled={!editMode} style={styles.formText} onChange={setName} />
+                <FormLocation label='Localização' enabled={editMode} defaultRegion={region} style={styles.formText} onChange={setRegion} />
+                <FormNumber label='Faltas máximas' defaultText={maxMisses} disabled={!editMode} style={[styles.formText, styles.faltasMaximas]} onChange={ () => setMaxMisses } />
                 {
                     editMode ?
                     <FAB
@@ -78,6 +74,9 @@ const styles = StyleSheet.create({
     },
     cog: {
         marginTop: 15,
+    },
+    faltasMaximas: {
+        marginTop: 130
     },
     fab: {
         backgroundColor: '#4b963f',

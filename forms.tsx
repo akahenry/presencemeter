@@ -27,7 +27,11 @@ FormText.defaultProps = {
 
 
 export const FormNumber = (props) => {
-    const [number, setNumber] = React.useState(0);
+    const [number, setNumber] = React.useState(props.defaultText);
+
+    React.useEffect(() => {
+        props.onChange(number);
+    }, [number]);
 
     return (
         <View style={props.style}>
@@ -35,19 +39,20 @@ export const FormNumber = (props) => {
             <TextInput
                 mode='outlined'
                 value={number.toString()}
-                onChangeText={text => { if (Number.isInteger(parseInt(text))) { setNumber(parseInt(text)); props.onChange(number); } }}
+                disabled={props.disabled}
+                onChangeText={text => { if (Number.isInteger(parseInt(text))) { setNumber(parseInt(text)); } }}
             />
         </View>
     );
 };
 
+FormNumber.defaultProps = {
+  defaultText: '',
+  disabled: false,
+}
+
 export const FormLocation = (props) => {
-    const [region, setRegion] = React.useState({
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    });
+    const [region, setRegion] = React.useState(props.defaultRegion);
 
 
     return (
@@ -56,6 +61,8 @@ export const FormLocation = (props) => {
             <MapView style={styles.map}
                 initialRegion={region}
                 onRegionChange={region => { setRegion(region); props.onChange(region); }}
+                scrollEnabled={props.enabled}
+                zoomEnabled={props.enabled}
             >
                 {<Marker
                     coordinate={{ latitude: region.latitude, longitude: region.longitude }}
@@ -64,6 +71,16 @@ export const FormLocation = (props) => {
         </View>
     );
 };
+
+FormLocation.defaultProps = {
+  defaultRegion: {
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+    },
+  enabled: true,
+}
 
 export const FormTime = (props) => {
     const [showDropDown, setShowDropDown] = React.useState(false);

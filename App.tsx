@@ -5,6 +5,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import * as cls from './class';
 
+const defaultClass = new cls.Class('Português', [], true, 0, 7, {
+  latitude: 37.78825,
+  longitude: -122.4324,
+  latitudeDelta: 0.0922,
+  longitudeDelta: 0.0421,
+});
+
 const ClassCard = (props) => {
   const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
 
@@ -19,8 +26,6 @@ const ClassCard = (props) => {
 const Main = ({ navigation, route}) => {
   const [active, setActive] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
-
-  const defaultClass = new cls.Class('Português');
   const [classes, setClasses] = React.useState([
     defaultClass,
   ]);
