@@ -5,17 +5,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import * as cls from './class';
 
-const addClass = (classes) => {
-  let newClass = new cls.Class('Inglês');
-
-  return classes.concat(newClass);
-}
-
 const ClassCard = (props) => {
   const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
 
   return (
-    <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { obj: props.obj })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
+    <Card key={props.index} onPress={() => props.navigation.navigate('EditClass', { obj: props.obj, onSave: () => props.refreshClasses() })} style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink} mode="outlined">
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
       <Card.Title titleStyle={styles.cardTitle} title={props.obj.name}/>
     </Card>
@@ -44,7 +38,7 @@ const Main = ({ navigation, route}) => {
         {
           classes.map((c, i) => {
             return (
-              <ClassCard key={i} obj={c} index={i} navigation={navigation} />
+              <ClassCard key={i} obj={c} index={i} navigation={navigation} refreshClasses={() => setClasses([...classes])} />
             );
           })
         }
