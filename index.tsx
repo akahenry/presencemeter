@@ -14,6 +14,7 @@ import App from './App';
 import EditClass from './EditClass';
 import CustomTheme from './customTheme';
 import AddClass from './AddClass';
+import ShowSchedulesClass from './ShowSchedulesClass';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,10 @@ export default function Main() {
               <Stack.Screen
                 name="EditClass"
                 component={EditClass}
+                />
+              <Stack.Screen
+                name="ShowSchedulesClass"
+                component={ShowSchedulesClass}
                 />
             </Stack.Navigator>
         </NavigationContainer>

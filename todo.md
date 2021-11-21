@@ -2,9 +2,8 @@
 
 ## Correções (teste sem usuários - adicionar se tiver notado mais alguma coisa no teste sem usuários)
 
-- [ ] Mudar título da tela AddClass para "Adicionar Classe"
-- [ ] Tirar delay do mapa
-- [ ] Ordenar cards usando algum critério mais inteligente
+- [x] Mudar título "Aula" da tela AddClass para "Adicionar Classe"
+- [ ] Botão de voltar nas telas AddClass, EditClass e ShowSchedules no lugar do botão de usuário
 
 ## Novidades
 
@@ -19,9 +18,10 @@
   - [x] Botão de salvar (quando em modo edição)
 - [ ] Presença usando tempo e geolocalização
 - [ ] Tela de horários de cada aula
-  - [ ] Botão pra trocar pra essa tela (substituindo a imagem de perfil?)
-  - [ ] Listagem de classes com horários
-  - [ ] Transformar em dropdowns
+  - [x] Botão pra trocar pra essa tela (Substituí o cog)
+  - [x] Listagem de classes
+  - [ ] Lista dos horários já marcados para cada classe
+  - [x] Transformar em dropdowns
 
 ## Melhorias e Opcionais
 
@@ -29,3 +29,5 @@
 - [ ] Persistência dos dados
 - [ ] Notificação perguntando se está na aula (quando chegar a hora da aula e estiver longe da classe ou GPS desligado)
 - [ ] Seleção de horário mais apropriada
+- [ ] Tirar delay do mapa
+- [ ] Ordenar cards usando algum critério mais inteligente

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Appbar, Avatar, Card, FAB, IconButton } from 'react-native-paper';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Geolocation from '@react-native-community/geolocation';
+import BackgroundTask from 'react-native-background-task';
 
 import * as cls from './class';
 
@@ -35,12 +37,58 @@ const ClassCard = (props) => {
   );
 }
 
-const Main = ({ navigation, route}) => {
+const Main = ({ navigation, route }) => {
   const [active, setActive] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
   const [classes, setClasses] = React.useState([
     defaultClass,
   ]);
+
+  React.useEffect(() => {
+    async function requestLocationPermission() {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: "Presencemeter GeoLocation Permission",
+            message:
+              "Presencemeter needs access to your GeoLocation " +
+              "so it can manage your presence",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the location")
+        } else {
+          console.log("location permission denied")
+        }
+      } catch (err) {
+        console.warn(err)
+      }
+    }
+
+    requestLocationPermission();
+    BackgroundTask.define(() => {
+      console.log("Loucurada né pai");
+      Geolocation.getCurrentPosition((info) => {
+        let now = new Date();
+        classes.forEach(cls => {
+          cls.intervals.forEach(interval => {
+            if (interval.begin.day.valueOf() == now.getDay() && interval.begin.time.hour <= now.getHours() && interval.begin.time.minutes <= now.getMinutes() && interval.end.time.hour >= now.getHours() && interval.end.time.minutes >= now.getMinutes()) {
+              let distance = (a, b, x, y) => Math.sqrt(Math.pow(a - x, 2) + Math.pow(b - y, 2));
+              if (distance(info.coords.latitude, info.coords.longitude, cls.region.latitude, cls.region.longitude) > cls.delta) {
+                cls.misses++;
+              }
+            }
+          });
+        });
+      BackgroundTask.finish();
+      });
+    });
+    BackgroundTask.schedule();
+  }, [])
 
   return (
     <View style={styles.mainView}>
@@ -48,7 +96,7 @@ const Main = ({ navigation, route}) => {
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
         <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
         <Appbar.Content titleStyle={styles.title} title="Presencemeter" />
-        <Appbar.Action style={styles.cog} icon="cog" onPress={() => setClasses([defaultClass])} />
+        <Appbar.Action style={styles.menu} icon="clock-check" onPress={() => navigation.navigate('ShowSchedulesClass', { classes: classes })} />
       </Appbar.Header>
 
       <ScrollView style={styles.cardsView}>
@@ -64,7 +112,7 @@ const Main = ({ navigation, route}) => {
       <FAB
         style={styles.fab}
         icon="plus"
-        onPress={() => navigation.navigate('AddClass',{ onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); }})}
+        onPress={() => navigation.navigate('AddClass', { onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); } })}
       />
     </View>
   );
@@ -88,7 +136,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 5,
   },
-  cog: {
+  menu: {
     marginTop: 15,
   },
   cardsView: {
