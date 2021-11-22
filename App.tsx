@@ -33,9 +33,13 @@ const CheckPresence = (classes: cls.Class[], location: GeolocationCoordinates) =
         intersectedTime = true;
       }
     });
-    if (intersectedTime && DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.altitude}) <= obj.delta) {
-      console.log(`Adding presence at location (${location.latitude}, ${location.longitude}) in class ${obj.name}`);
-      obj.addPresence(new Date(Date.now()));
+    if (intersectedTime) {
+      if(obj.gpsEnabled) {
+        if (DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.altitude}) <= obj.delta) {
+          console.log(`Adding presence at location (${location.latitude}, ${location.longitude}) in class ${obj.name}`);
+          obj.addPresence(new Date(Date.now()));
+        }
+      } // TODO: Notify if gps is not enabled
     }
   });
 }
@@ -158,6 +162,7 @@ const Main = ({ navigation, route }) => {
       <ScrollView style={styles.cardsView}>
         {
           classes.map((c, i) => {
+            console.log(`Testing purposes: ${JSON.stringify(c)}`);
             return (
               <ClassCard key={i} obj={c} index={i} navigation={navigation} deleteClass={(cls) => { DeleteClass(classes, cls); setClasses([...classes]); }} refreshClasses={() => setClasses([...classes])} />
             );

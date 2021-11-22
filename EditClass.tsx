@@ -66,6 +66,9 @@ const EditClass = ({ route, navigation }) => {
                     <Text>Horários</Text>
                     {
                         schedule.map((s: cls.DayHourInterval, i) => {
+                            let begin: cls.DayHour = new cls.DayHour(s.begin.day, new cls.Hour(s.begin.time.hour, s.begin.time.minutes));
+                            let end: cls.DayHour = new cls.DayHour(s.end.day, new cls.Hour(s.end.time.hour, s.end.time.minutes));
+                            s = new cls.DayHourInterval(begin, end);
                             return (
                             <List.Item
                                 style={styles.scheduleListItem}
