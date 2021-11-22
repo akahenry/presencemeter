@@ -33,4 +33,4 @@
 - [x] Seleção de horário mais apropriada
 - [ ] Tirar delay do mapa
 - [ ] Ordenar cards usando algum critério mais inteligente
-- [ ] Remover horários na adição
+- [x] Remover horários na adição

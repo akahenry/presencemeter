@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
-import { Appbar, Avatar, FAB, Button, List } from 'react-native-paper';
+import { Appbar, Avatar, FAB, Button, List, IconButton } from 'react-native-paper';
 
 import * as cls from './class';
 import { FormText, FormLocation, FormNumber, FormTime } from './forms';
@@ -22,19 +22,31 @@ const AddClass = ({ route, navigation }) => {
             <Appbar.Header style={styles.appbar} statusBarHeight={5}>
                 <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
                 <Appbar.Content title="Presencemeter" subtitle="Adicionar Classe" />
-                <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")}/>
+                <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")} />
             </Appbar.Header>
             <ScrollView style={styles.page}>
                 <FormText label="Nome" style={styles.formText} onChange={setName} />
                 <FormLocation label='Localização' style={styles.formText} onChange={setRegion} />
                 <FormNumber label='Faltas máximas' style={[styles.formText, styles.faltasMaximas]} onChange={setMaxMisses} />
-                <FormTime visible={timeFormVisible} onAccept={(returnedTime) => setSchedule(schedule.concat(returnedTime)) } setVisible={setTimeFormVisible} />
+                <FormTime visible={timeFormVisible} onAccept={(returnedTime) => setSchedule(schedule.concat(returnedTime))} setVisible={setTimeFormVisible} />
                 <List.Section>
                     <Text style={styles.formLabel}>Horários</Text>
                     {
                         schedule.map((s: cls.DayHourInterval, i) => {
                             return (
-                            <List.Item style={styles.scheduleListItem} key={i} title={`${s.begin.toString()} - ${s.end.toString()}`} left={() => <List.Icon icon="calendar-check" />} />
+                                <List.Item style={styles.scheduleListItem} key={i} title={`${s.begin.toString()} - ${s.end.toString()}`} left={() => <List.Icon icon="calendar-check" />} right={() => {
+                                    return (
+                                            <View style={{ paddingTop: 15 }}>
+                                                <IconButton
+                                                    icon="delete"
+                                                    color={styles.deleteButtonColor}
+                                                    style={{ marginTop: 0 }}
+                                                    size={20}
+                                                    onPress={() => { schedule.splice(i, 1); setSchedule([...schedule]); }}
+                                                />
+                                            </View>
+                                    );
+                                }} />
                             );
                         })
                     }
@@ -43,8 +55,8 @@ const AddClass = ({ route, navigation }) => {
                 <FAB
                     style={styles.fab}
                     label="Salvar"
-                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, schedule, region != null, 0, maxMisses, region)); navigation.goBack(); } } }
-                    icon={undefined}/>
+                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, schedule, region != null, 0, maxMisses, region)); navigation.goBack(); } }}
+                    icon={undefined} />
             </ScrollView>
         </View>
     );
@@ -94,6 +106,7 @@ const styles = StyleSheet.create({
         marginBottom: -12,
         marginTop: -12,
         marginLeft: -10,
-    }
+    },
+    deleteButtonColor: "#d81a1a",
 
 });
