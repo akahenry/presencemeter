@@ -3,6 +3,7 @@ import { Appbar, Card, FAB, IconButton } from 'react-native-paper';
 import { StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
+import BackgroundTask from 'react-native-background-task'
 
 import * as cls from './class';
 
@@ -15,6 +16,27 @@ const defaultClass = new cls.Class('Português', [], true, 0, 7, {
 
 const DeleteClass = (classes, cls) => {
   classes.splice(classes.findIndex((c,i,a) => c.id == cls.id), 1);
+}
+
+const DistanceBetweenPoints = (p1: {x: number, y: number}, p2: {x: number, y: number}) : number => {
+  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+}
+
+const CheckPresence = (classes: cls.Class[], location: GeolocationCoordinates) => {
+  console.log(`Checking presence at location (${location.latitude}, ${location.longitude})`);
+  classes.forEach(obj => {
+    let now = new Date(Date.now());
+    let intersectedTime = false;
+    obj.intervals.forEach(interval => {
+      if (interval.inDate(now)) {
+        intersectedTime = true;
+      }
+    });
+    if (intersectedTime && DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.altitude}) <= obj.delta) {
+      console.log(`Adding presence at location (${location.latitude}, ${location.longitude}) in class ${obj.name}`);
+      obj.addPresence(new Date(Date.now()));
+    }
+  });
 }
 
 const ClassCard = (props) => {
@@ -58,16 +80,42 @@ const Main = ({ navigation, route }) => {
             buttonNegative: "Cancel",
             buttonPositive: "OK"
           }
-        )
+        );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          console.log("You can use the location")
+          console.log("You can use the location");
         } else {
-          console.log("location permission denied")
+          console.log("Location permission denied");
+        }
+        const backgroundGranted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_BACKGROUND_LOCATION,
+          {
+            title: "Presencemeter GeoLocation Permission",
+            message:
+              "Presencemeter needs access to your GeoLocation " +
+              "so it can manage your presence",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+        if (backgroundGranted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log("You can use the location in background");
+        } else {
+          console.log("Background location permission denied");
         }
       } catch (err) {
-        console.warn(err)
+        console.warn(err);
       }
     }
+
+    Geolocation.watchPosition((response) => CheckPresence(classes, response.coords), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
+
+    BackgroundTask.define(() => {
+      Geolocation.getCurrentPosition((response) => CheckPresence(classes, response.coords), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
+      BackgroundTask.finish();
+    });
+
+    BackgroundTask.schedule();
 
     requestLocationPermission();
   }, [])

@@ -16,7 +16,9 @@
   - [ ] Lista de horários (permite remoção e adição de horários quando em modo edição)
   - [ ] Botão de marcar presença (esconde quando em modo edição)
   - [x] Botão de salvar (quando em modo edição)
-- [ ] Presença usando tempo e geolocalização
+- [x] Presença usando tempo e geolocalização
+  - [ ] Background
+  - [x] Foreground
 - [ ] Tela de horários de cada aula
   - [x] Botão pra trocar pra essa tela (Substituí o avatar, deletei o cog)
   - [x] Listagem de classes

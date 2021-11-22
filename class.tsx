@@ -76,6 +76,10 @@ export class DayHourInterval {
     toString() : string {
         return `${this.begin.toString()} - ${this.end.toString()}`;
     }
+
+    inDate(date: Date): boolean {
+        return date.getDay() == this.begin.day && date.getHours() >= this.begin.time.hour && date.getMinutes() >= this.begin.time.minutes && date.getHours() <= this.end.time.hour && date.getMinutes() <= this.end.time.minutes;
+    }
 }
 
 export class Class {
