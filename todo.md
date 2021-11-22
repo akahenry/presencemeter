@@ -13,7 +13,7 @@
   - [x] Nome
   - [x] Mapa
   - [x] Faltas máximas
-  - [ ] Lista de horários (permite remoção e adição de horários quando em modo edição)
+  - [x] Lista de horários (permite remoção e adição de horários quando em modo edição)
   - [x] Botão de marcar presença (esconde quando em modo edição)
   - [x] Botão de salvar (quando em modo edição)
 - [x] Presença usando tempo e geolocalização

@@ -81,7 +81,7 @@ const EditClass = ({ route, navigation }) => {
                                                 color={styles.deleteButtonColor}
                                                 style={{ marginTop: 0 }}
                                                 size={20}
-                                                onPress={() => console.log('Pressed: ' + i)}
+                                                onPress={() => { schedule.splice(i, 1); setSchedule([...schedule]); }}
                                             />
                                         </View>
                                         :
