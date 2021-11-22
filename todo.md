@@ -24,7 +24,7 @@
   - [x] Listagem de classes
   - [x] Lista dos horários já marcados para cada classe
   - [x] Transformar em dropdowns
-- [ ] Persistência dos dados
+- [x] Persistência dos dados
 
 ## Melhorias e Opcionais
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Appbar, Card, FAB, IconButton } from 'react-native-paper';
-import { StyleSheet, View, PermissionsAndroid } from 'react-native';
+import { AppState, StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
-import BackgroundTask from 'react-native-background-task'
+import BackgroundTask from 'react-native-background-task';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as cls from './class';
 
@@ -60,11 +61,13 @@ const ClassCard = (props) => {
 }
 
 const Main = ({ navigation, route }) => {
-  const [active, setActive] = React.useState('');
-  const [modalVisible, setModalVisible] = React.useState(false);
   const [classes, setClasses] = React.useState([
     defaultClass,
   ]);
+
+  const getClasses = () => {
+    return classes;
+  }
 
   React.useEffect(() => {
     async function requestLocationPermission() {
@@ -118,7 +121,30 @@ const Main = ({ navigation, route }) => {
     BackgroundTask.schedule();
 
     requestLocationPermission();
-  }, [])
+  }, []);
+
+  React.useEffect(() => {
+    AppState.addEventListener('change', (nextAppState) => {
+      if (nextAppState === "background" || nextAppState === "inactive") {
+        console.log("Saving classes into storage");
+        const jsonValue = JSON.stringify(getClasses());
+        console.log(`Saving value: ${jsonValue}`);
+        AsyncStorage.setItem('@presencemeter_classes', jsonValue).catch((error) => {
+          if (error != null) {
+            console.log(error);
+          }
+        });
+      } else if (nextAppState === "active") {
+      AsyncStorage.getItem('@presencemeter_classes').then((value) => {
+        console.log("Reading classes from storage");
+        if(value != null) {
+          console.log(`Read value: ${value}`);
+          setClasses(JSON.parse(value));
+        }
+      });
+      }
+    });
+  }, [classes]);
 
   return (
     <View style={styles.mainView}>
