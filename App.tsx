@@ -65,9 +65,7 @@ const ClassCard = (props) => {
 }
 
 const Main = ({ navigation, route }) => {
-  const [classes, setClasses] = React.useState([
-    defaultClass,
-  ]);
+  const [classes, setClasses] = React.useState([]);
 
   const getClasses = () => {
     return classes;
@@ -144,9 +142,9 @@ const Main = ({ navigation, route }) => {
         if(value != null) {
           console.log(`Read value: ${value}`);
           let parsedValue: cls.Class[] = JSON.parse(value);
-
+          let newClasses: cls.Class[] = [];
           parsedValue.forEach(element => {
-            let intervals: cls.DayHourInterval[]
+            let intervals: cls.DayHourInterval[] = []
             element.intervals.forEach(interval => {
               let begin: cls.DayHour = new cls.DayHour(interval.begin.day, new cls.Hour(interval.begin.time.hour, interval.begin.time.minutes));
               let end: cls.DayHour = new cls.DayHour(interval.end.day, new cls.Hour(interval.end.time.hour, interval.end.time.minutes));
@@ -166,8 +164,9 @@ const Main = ({ navigation, route }) => {
               }
               newClass.addPresence(new Date(JSON.parse(JSON.stringify(date), dateTimeReviver)));
             });
-            setClasses(classes.concat(newClass));
+            newClasses = newClasses.concat(newClass);
           });
+          setClasses(newClasses);
         }
       });
       }
