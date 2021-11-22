@@ -26,7 +26,8 @@ const ClassCard = (props) => {
       onPress={() => props.navigation.navigate('EditClass', {
         obj: props.obj,
         onSave: () => props.refreshClasses(),
-        onDelete: (cls) => props.deleteClass(cls)
+        onDelete: (cls) => props.deleteClass(cls),
+        addPresence: (date: Date) => props.obj.addPresence(date)
       })}
       style={props.index % 2 == 0 ? styles.cardPurple : styles.cardPink}
       mode="outlined">
@@ -75,7 +76,7 @@ const Main = ({ navigation, route }) => {
     <View style={styles.mainView}>
 
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
-        <Appbar.Action style={styles.menu} icon="clock-check" onPress={() => navigation.navigate('ShowSchedulesClass', { classes: classes })} />
+        <Appbar.Action style={styles.menu} icon="clock-check" onPress={() => { setClasses([...classes]); navigation.navigate('ShowSchedulesClass', { classes: classes }); }} />
         <Appbar.Content titleStyle={styles.title} title="Presencemeter" />       
       </Appbar.Header>
 

@@ -63,12 +63,22 @@ const EditClass = ({ route, navigation }) => {
                         onPress={() => { setEditMode(false); route.params.onSave(); saveClass(route.params.obj, name, maxMisses, region, schedule); } }
                         icon={undefined}/>
                     :
-                    <View style={{ flexDirection:"row" }}>
-                        <Button icon="pencil" mode="outlined" style={styles.editButton} onPress={() => setEditMode(true)}>
-                            Editar
-                        </Button>
-                        <Button icon="delete" mode="contained" color={styles.deleteButtonColor} style={styles.deleteButton} onPress={() => setDeleteDialogVisible(true) }>
-                            Excluir
+                    <View>
+                        <View style={{ flexDirection:"row" }}>
+                            <Button icon="pencil" mode="outlined" style={styles.editButton} onPress={() => setEditMode(true)}>
+                                Editar
+                            </Button>
+                            <Button icon="delete" mode="contained" color={styles.deleteButtonColor} style={styles.deleteButton} onPress={() => setDeleteDialogVisible(true) }>
+                                Excluir
+                            </Button>
+                        </View>
+                        <Button
+                            icon="map-check"
+                            mode="contained"
+                            labelStyle={styles.markPresenceIcon}
+                            style={styles.markPresenceButton}
+                            onPress={() => { route.params.addPresence(new Date()); console.log(route.params.obj.presences); }}>
+                            <Text style={styles.markPresenceLabel}>Marcar presença</Text>
                         </Button>
                     </View>
                 }
@@ -124,4 +134,17 @@ const styles = StyleSheet.create({
         fontSize: 19
     },
     deleteButtonColor: "#d81a1a",
+
+    markPresenceButton: {
+        marginTop: 15,
+        height: 70,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    markPresenceLabel: {
+        fontSize: 15,
+    },
+    markPresenceIcon: {
+        fontSize: 25,
+    },
 });

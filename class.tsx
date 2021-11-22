@@ -87,6 +87,7 @@ export class Class {
     gpsEnabled: boolean;
     misses: number;
     maxMisses: number;
+    presences: Date[];
     region: {
         latitude: number,
         longitude: number,
@@ -112,7 +113,13 @@ export class Class {
         this.maxMisses = maxMisses;
         this.region = region;
         this.id = Class.currentId;
-        Class.currentId += 1;
         this.delta = 100;
+        this.presences = [];
+
+        Class.currentId += 1;
+    }
+
+    addPresence(date: Date) {
+        this.presences = this.presences.concat(date);
     }
 }
