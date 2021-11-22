@@ -20,7 +20,7 @@
 - [ ] Tela de horários de cada aula
   - [x] Botão pra trocar pra essa tela (Substituí o avatar, deletei o cog)
   - [x] Listagem de classes
-  - [ ] Lista dos horários já marcados para cada classe
+  - [x] Lista dos horários já marcados para cada classe
   - [x] Transformar em dropdowns
 
 ## Melhorias e Opcionais

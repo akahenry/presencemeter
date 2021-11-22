@@ -76,8 +76,9 @@ const Main = ({ navigation, route }) => {
     <View style={styles.mainView}>
 
       <Appbar.Header style={styles.appbar} statusBarHeight={5}>
-        <Appbar.Action style={styles.menu} icon="clock-check" onPress={() => { setClasses([...classes]); navigation.navigate('ShowSchedulesClass', { classes: classes }); }} />
-        <Appbar.Content titleStyle={styles.title} title="Presencemeter" />       
+        <Appbar.Content titleStyle={styles.title} title="Presencemeter" />
+        <Appbar.Action style={styles.menu} icon="clock-check" size={50} color="#fff" onPress={() => { setClasses([...classes]); navigation.navigate('ShowSchedulesClass', { classes: classes }); }} />
+             
       </Appbar.Header>
 
       <ScrollView style={styles.cardsView}>
@@ -92,7 +93,7 @@ const Main = ({ navigation, route }) => {
 
       <FAB
         style={styles.fab}
-        icon="plus"
+        icon="plus" color="#fff"
         onPress={() => navigation.navigate('AddClass', { onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); } })}
       />
     </View>
@@ -107,15 +108,19 @@ const styles = StyleSheet.create({
   },
   appbar: {
     marginBottom: 15,
-    height: 100
+    height: 100,
+    flexDirection: "column"
   },
   title: {
     fontFamily: 'Roboto-Regular',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 35,
+    height: 70,
+    color: '#fff'
   },
   menu: {
     marginLeft: 10,
-    marginTop: 5
+    marginTop: 35
   },
   cardsView: {
     margin: 20,
