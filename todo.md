@@ -22,11 +22,11 @@
   - [x] Listagem de classes
   - [x] Lista dos horários já marcados para cada classe
   - [x] Transformar em dropdowns
+- [ ] Persistência dos dados
 
 ## Melhorias e Opcionais
 
 - [ ] Tirar warnings ou fazer publish do apk pra esconder os warnings
-- [ ] Persistência dos dados
 - [ ] Notificação perguntando se está na aula (quando chegar a hora da aula e estiver longe da classe ou GPS desligado)
 - [x] Seleção de horário mais apropriada
 - [ ] Tirar delay do mapa
