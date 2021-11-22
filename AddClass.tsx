@@ -20,9 +20,7 @@ const AddClass = ({ route, navigation }) => {
     return (
         <View style={styles.mainView}>
             <Appbar.Header style={styles.appbar} statusBarHeight={5}>
-                <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
                 <Appbar.Content title="Presencemeter" subtitle="Adicionar Classe" />
-                <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")} />
             </Appbar.Header>
             <ScrollView style={styles.page}>
                 <FormText label="Nome" style={styles.formText} onChange={setName} />
