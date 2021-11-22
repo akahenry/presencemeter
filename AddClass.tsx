@@ -21,7 +21,7 @@ const AddClass = ({ route, navigation }) => {
         <View style={styles.mainView}>
             <Appbar.Header style={styles.appbar} statusBarHeight={5}>
                 <Avatar.Image style={styles.avatar} size={50} source={require('./assets/avatar.jpeg')} />
-                <Appbar.Content title="Presencemeter" subtitle="Aula" />
+                <Appbar.Content title="Presencemeter" subtitle="Adicionar Classe" />
                 <Appbar.Action style={styles.cog} icon="cog" onPress={() => console.log("cog clicked")}/>
             </Appbar.Header>
             <ScrollView style={styles.page}>
@@ -43,7 +43,7 @@ const AddClass = ({ route, navigation }) => {
                 <FAB
                     style={styles.fab}
                     label="Salvar"
-                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, [], region != null, 0, maxMisses, region)); navigation.goBack(); } } }
+                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, schedule, region != null, 0, maxMisses, region)); navigation.goBack(); } } }
                     icon={undefined}/>
             </ScrollView>
         </View>

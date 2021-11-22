@@ -1,14 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Appbar, Avatar, Button, FAB, Dialog, Portal, Text } from 'react-native-paper';
+import { Appbar, Avatar, Button, FAB, Dialog, Portal, Text, List, IconButton } from 'react-native-paper';
 
-import { FormText, FormLocation, FormNumber } from './forms';
+import * as cls from './class';
+import { FormText, FormLocation, FormNumber, FormTime } from './forms';
 
 const saveClass = (obj, name, maxMisses, region, schedule) => {
   obj.name = name;
   obj.maxMisses = maxMisses;
   obj.region = region;
-  obj.schedule = schedule;
+  obj.intervals = schedule;
 }
 
 const DeleteConfirmDialog = (props) => {
@@ -36,7 +37,8 @@ const EditClass = ({ route, navigation }) => {
     const [editMode, setEditMode] = React.useState(false);
     const [maxMisses, setMaxMisses] = React.useState(route.params.obj.maxMisses);
     const [region, setRegion] = React.useState(route.params.obj.region);
-    const [schedule, setSchedule] = React.useState([]);
+    const [schedule, setSchedule] = React.useState(route.params.obj.intervals);
+    const [timeFormVisible, setTimeFormVisible] = React.useState(false);
 
     const [deleteDialogVisible, setDeleteDialogVisible] = React.useState(false);
     
@@ -52,18 +54,56 @@ const EditClass = ({ route, navigation }) => {
                     visible={deleteDialogVisible}
                     onDelete={() => { route.params.onDelete(route.params.obj); navigation.goBack(); } }
                     setVisible={setDeleteDialogVisible} />
+                <FormTime
+                    visible={timeFormVisible}
+                    onAccept={(returnedTime) => setSchedule(schedule.concat(returnedTime)) }
+                    setVisible={setTimeFormVisible} />
+
                 <FormText label="Nome" defaultText={name} disabled={!editMode} style={styles.formText} onChange={setName} />
                 <FormLocation label='Localização' enabled={editMode} defaultRegion={region} style={styles.formText} onChange={setRegion} />
                 <FormNumber label='Faltas máximas' defaultText={maxMisses} disabled={!editMode} style={[styles.formText, styles.faltasMaximas]} onChange={ () => setMaxMisses } />
+                <List.Section>
+                    <Text>Horários</Text>
+                    {
+                        schedule.map((s: cls.DayHourInterval, i) => {
+                            return (
+                            <List.Item
+                                style={styles.scheduleListItem}
+                                key={i}
+                                title={`${s.begin.toString()} - ${s.end.toString()}`}
+                                left={() => <List.Icon icon="calendar-check" />}
+                                right={() => {
+                                    return (
+                                        editMode ?
+                                        <View style={{paddingTop: 15}}>
+                                            <IconButton
+                                                icon="delete"
+                                                color={styles.deleteButtonColor}
+                                                style={{ marginTop: 0 }}
+                                                size={20}
+                                                onPress={() => console.log('Pressed: ' + i)}
+                                            />
+                                        </View>
+                                        :
+                                        null
+                                    );
+                                }} />
+                            );
+                        })
+                    }
+                </List.Section>
                 {
                     editMode ?
-                    <FAB
-                        style={styles.fab}
-                        label="Salvar"
-                        onPress={() => { setEditMode(false); route.params.onSave(); saveClass(route.params.obj, name, maxMisses, region, schedule); } }
-                        icon={undefined}/>
-                    :
                     <View>
+                        <Button icon="calendar-plus" mode="contained" onPress={() => setTimeFormVisible(true)}>Adicionar Horário</Button>
+                        <FAB
+                            style={styles.fab}
+                            label="Salvar"
+                            onPress={() => { setEditMode(false); route.params.onSave(); saveClass(route.params.obj, name, maxMisses, region, schedule); } }
+                            icon={undefined}/>
+                    </View>
+                    :
+                    <View style={{ marginTop: 15 }}>
                         <View style={{ flexDirection:"row" }}>
                             <Button icon="pencil" mode="outlined" style={styles.editButton} onPress={() => setEditMode(true)}>
                                 Editar
@@ -97,6 +137,10 @@ const styles = StyleSheet.create({
     page: {
         padding: 20,
     },
+    formLabel: {
+        fontWeight: 'bold',
+        color: '#000000'
+    },
     formText: {
         marginBottom: 15,
     },
@@ -113,6 +157,11 @@ const styles = StyleSheet.create({
     },
     faltasMaximas: {
         marginTop: 130
+    },
+    scheduleListItem: {
+        marginBottom: -12,
+        marginTop: -12,
+        marginLeft: -10,
     },
     fab: {
         backgroundColor: '#4b963f',
