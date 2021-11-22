@@ -143,7 +143,31 @@ const Main = ({ navigation, route }) => {
         console.log("Reading classes from storage");
         if(value != null) {
           console.log(`Read value: ${value}`);
-          setClasses(JSON.parse(value));
+          let parsedValue: cls.Class[] = JSON.parse(value);
+
+          parsedValue.forEach(element => {
+            let intervals: cls.DayHourInterval[]
+            element.intervals.forEach(interval => {
+              let begin: cls.DayHour = new cls.DayHour(interval.begin.day, new cls.Hour(interval.begin.time.hour, interval.begin.time.minutes));
+              let end: cls.DayHour = new cls.DayHour(interval.end.day, new cls.Hour(interval.end.time.hour, interval.end.time.minutes));
+              intervals = intervals.concat(new cls.DayHourInterval(begin, end));
+            });
+            let newClass = new cls.Class(element.name, intervals, element.gpsEnabled, element.misses, element.maxMisses, element.region);
+            element.presences.forEach(date => {
+              const dateTimeReviver = function (key, value) {
+                  var a;
+                  if (typeof value === 'string') {
+                      a = /\/Date\((\d*)\)\//.exec(value);
+                      if (a) {
+                          return new Date(+a[1]);
+                      }
+                  }
+                  return value;
+              }
+              newClass.addPresence(new Date(JSON.parse(JSON.stringify(date), dateTimeReviver)));
+            });
+            setClasses(classes.concat(newClass));
+          });
         }
       });
       }
@@ -162,7 +186,6 @@ const Main = ({ navigation, route }) => {
       <ScrollView style={styles.cardsView}>
         {
           classes.map((c, i) => {
-            console.log(`Testing purposes: ${JSON.stringify(c)}`);
             return (
               <ClassCard key={i} obj={c} index={i} navigation={navigation} deleteClass={(cls) => { DeleteClass(classes, cls); setClasses([...classes]); }} refreshClasses={() => setClasses([...classes])} />
             );
