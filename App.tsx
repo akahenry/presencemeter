@@ -23,27 +23,6 @@ const DistanceBetweenPoints = (p1: {x: number, y: number}, p2: {x: number, y: nu
   return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 }
 
-const CheckPresence = (classes: cls.Class[], location: GeolocationCoordinates) => {
-  console.log(`Checking presence at location (${location.latitude}, ${location.longitude})`);
-  classes.forEach(obj => {
-    let now = new Date(Date.now());
-    let intersectedTime = false;
-    obj.intervals.forEach(interval => {
-      if (interval.inDate(now)) {
-        intersectedTime = true;
-      }
-    });
-    if (intersectedTime) {
-      if(obj.gpsEnabled) {
-        if (DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.altitude}) <= obj.delta) {
-          console.log(`Adding presence at location (${location.latitude}, ${location.longitude}) in class ${obj.name}`);
-          obj.addPresence(new Date(Date.now()));
-        }
-      } // TODO: Notify if gps is not enabled
-    }
-  });
-}
-
 const ClassCard = (props) => {
   const [gpsEnabled, setGpsEnabled] = React.useState(props.obj.gpsEnabled);
 
@@ -66,10 +45,37 @@ const ClassCard = (props) => {
 
 const Main = ({ navigation, route }) => {
   const [classes, setClasses] = React.useState([]);
+  const [position, setPosition] = React.useState({latitude: 0, longitude: 0});
 
   const getClasses = () => {
     return classes;
   }
+
+  React.useEffect(() => {
+    let location = position
+    console.log(`Checking presence at location (${location.latitude}, ${location.longitude})`);
+    console.log(classes);
+    classes.forEach(obj => {
+      let now = new Date(Date.now());
+      let intersectedTime = false;
+      obj.intervals.forEach(interval => {
+        console.log(`DATA LOCA: ${interval}`);
+        console.log(`DATA certa: ${now}`);
+        if (interval.inDate(now)) {
+          intersectedTime = true;
+        }
+      });
+      if (intersectedTime) {
+        if(obj.gpsEnabled) {
+          console.log(`Distancia entre os pontos: ${DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.longitude})}`);
+          if (DistanceBetweenPoints({x: obj.region.latitude, y: obj.region.longitude}, {x: location.latitude, y: location.longitude}) <= obj.delta) {
+            console.log(`Adding presence at location (${location.latitude}, ${location.longitude}) in class ${obj.name}`);
+            obj.addPresence(new Date(Date.now()));
+          }
+        } // TODO: Notify if gps is not enabled
+      }
+    });
+  }, [position]);
 
   React.useEffect(() => {
     async function requestLocationPermission() {
@@ -113,10 +119,10 @@ const Main = ({ navigation, route }) => {
       }
     }
 
-    Geolocation.watchPosition((response) => CheckPresence(classes, response.coords), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
+    Geolocation.watchPosition((response) => setPosition({latitude: response.coords.latitude, longitude: response.coords.longitude}), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
 
     BackgroundTask.define(() => {
-      Geolocation.getCurrentPosition((response) => CheckPresence(classes, response.coords), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
+      Geolocation.getCurrentPosition((response) => setPosition({latitude: response.coords.latitude, longitude: response.coords.longitude}), undefined, {enableHighAccuracy: true, maximumAge: 10, timeout:60000});
       BackgroundTask.finish();
     });
 

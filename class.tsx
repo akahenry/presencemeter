@@ -89,7 +89,10 @@ export class DayHourInterval {
     }
 
     inDate(date: Date): boolean {
-        return date.getDay() == this.begin.day && date.getHours() >= this.begin.time.hour && date.getMinutes() >= this.begin.time.minutes && date.getHours() <= this.end.time.hour && date.getMinutes() <= this.end.time.minutes;
+        return date.getDay() == this.begin.day && 
+            ((date.getHours() > this.begin.time.hour) ||
+            (date.getHours() == this.begin.time.hour && date.getMinutes() >= this.begin.time.minutes)) && 
+            ((date.getHours() < this.end.time.hour) || (date.getHours() == this.end.time.hour && date.getMinutes() <= this.end.time.minutes));
     }
 }
 
@@ -128,7 +131,7 @@ export class Class {
         this.maxMisses = maxMisses;
         this.region = region;
         this.id = Class.currentId;
-        this.delta = 100;
+        this.delta = 0.01;
         this.presences = [];
 
         Class.currentId += 1;
