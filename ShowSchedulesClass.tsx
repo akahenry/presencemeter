@@ -5,6 +5,10 @@ import { Appbar, Avatar, FAB, Button, List } from 'react-native-paper';
 import * as cls from './class';
 import ClassCard from './App';
 
+const formatDate = (date) => {
+    return `${cls.zeroPad(date.getDate(), 2)}/${cls.zeroPad(date.getMonth(), 2)}/${cls.zeroPad(date.getFullYear() - 2000, 2)} - ${cls.weekdayToString(date.getDay())}, ${cls.zeroPad(date.getHours(), 2)}:${cls.zeroPad(date.getMinutes(), 2)}`;
+}
+
 const ShowSchedulesClass = ({ route, navigation }) => {
     const [expanded, setExpanded] = React.useState(true);
     const handlePress = () => setExpanded(!expanded);
@@ -18,11 +22,11 @@ const ShowSchedulesClass = ({ route, navigation }) => {
                 {
                     route.params.classes.map((c, i) => {
                         return (
-                            <List.Accordion title={c.name} key={i} left={props => <List.Icon {...props} icon="folder" />}>
+                            <List.Accordion title={c.name} key={i} left={props => <List.Icon {...props} icon="clock-check" />}>
                             {
                                 c.presences.map((p, i) => {
                                     return (
-                                        <List.Item title={p.toLocaleString()} key={i}/>
+                                        <List.Item title={formatDate(p)} key={i}/>
                                     );
                                 })
                             }                         
