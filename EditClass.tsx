@@ -60,6 +60,7 @@ const EditClass = ({ route, navigation }) => {
                 <FormText label="Nome" defaultText={name} disabled={!editMode} style={styles.formText} onChange={setName} />
                 <FormLocation label='Localização' enabled={editMode} defaultRegion={region} style={styles.formText} onChange={setRegion} />
                 <FormNumber label='Faltas máximas' defaultText={maxMisses} disabled={!editMode} style={[styles.formText, styles.faltasMaximas]} onChange={ () => setMaxMisses } />
+                <Text style={{fontWeight: "bold"}}>Faltas atuais: {route.params.obj.misses}</Text>
                 <List.Section>
                     <Text>Horários</Text>
                     {
