@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, ScrollView, StyleSheet } from 'react-native';
-import { Appbar, Avatar, FAB, Button, List, IconButton } from 'react-native-paper';
+import { Appbar, FAB, Button, List, IconButton } from 'react-native-paper';
 
 import * as cls from './class';
 import { FormText, FormLocation, FormNumber, FormTime } from './forms';

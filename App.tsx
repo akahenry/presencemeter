@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appbar, Card, FAB, IconButton } from 'react-native-paper';
+import { Appbar, Card, FAB, IconButton, Paragraph } from 'react-native-paper';
 import { AppState, StyleSheet, View, PermissionsAndroid } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Geolocation from '@react-native-community/geolocation';
@@ -39,6 +39,9 @@ const ClassCard = (props) => {
       mode="outlined">
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
       <Card.Title titleStyle={styles.cardTitle} title={props.obj.name}/>
+      <Card.Content>
+        <Paragraph style={[styles.cardContent, props.obj.maxMisses - props.obj.misses < 2 ? styles.missesRed : styles.missesNormal]}>{props.obj.misses}/{props.obj.maxMisses}</Paragraph> 
+      </Card.Content>
     </Card>
   );
 }
@@ -251,9 +254,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center'
   },
   cardTitle: {
-    marginBottom: 150,
+    // marginBottom: 150,
+    marginTop: -40,
     alignSelf: 'center',
     fontFamily: 'Roboto-Regular'
+  },
+  cardContent: {
+    fontSize: 20,
+    marginTop: 10
   },
   fab: {
     position: 'absolute',
@@ -275,5 +283,11 @@ const styles = StyleSheet.create({
   },
   geoIconDisabled: {
     opacity: 0.2
+  },
+  missesRed: {
+    color: '#d11'
+  },
+  missesNormal: {
+    color: '#000'
   }
 });
