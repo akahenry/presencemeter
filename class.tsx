@@ -114,7 +114,7 @@ export class Class {
     name: String;
     intervals: DayHourInterval[];
     gpsEnabled: boolean;
-    misses: number;
+    misses: Date[];
     maxMisses: number;
     presences: Date[];
     region: {
@@ -124,7 +124,7 @@ export class Class {
         longitudeDelta: number
     };
     delta: Number;
-    constructor(name: String, intervals: DayHourInterval[] = [], gpsEnabled: boolean = false, misses: number = 0, maxMisses: number = 0, region: {
+    constructor(name: String, intervals: DayHourInterval[] = [], gpsEnabled: boolean = false, misses: Date[] = [], maxMisses: number = 0, region: {
         latitude: number,
         longitude: number,
         latitudeDelta: number,
@@ -145,5 +145,9 @@ export class Class {
 
     addPresence(date: Date) {
         this.presences = this.presences.concat(date);
+    }
+
+    addMiss(date: Date) {
+        this.misses = this.misses.concat(date);
     }
 }

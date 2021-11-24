@@ -48,7 +48,7 @@ const AddClass = ({ route, navigation }) => {
                 <FAB
                     style={styles.fab}
                     label="Salvar"
-                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, schedule, region != null, 0, maxMisses, region)); navigation.goBack(); } }}
+                    onPress={() => { if (name.length > 0) { route.params.onSubmit(new cls.Class(name, schedule, region != null, [], maxMisses, region)); navigation.goBack(); } }}
                     icon={undefined} />
             </ScrollView>
         </View>

@@ -33,7 +33,7 @@ const ClassCard = (props) => {
       <IconButton style={gpsEnabled ? styles.geoIconEnabled : styles.geoIconDisabled} icon="map-marker" size={20} onPress={() => { setGpsEnabled(!gpsEnabled); props.obj.gpsEnabled = !gpsEnabled; console.log(props.obj.gpsEnabled); }} />
       <Card.Title titleStyle={styles.cardTitle} title={props.obj.name}/>
       <Card.Content>
-        <Paragraph style={[styles.cardContent, props.obj.maxMisses - props.obj.misses < 2 ? styles.missesRed : styles.missesNormal]}>{props.obj.misses}/{props.obj.maxMisses}</Paragraph> 
+        <Paragraph style={[styles.cardContent, props.obj.maxMisses - props.obj.misses.length < 2 ? styles.missesRed : styles.missesNormal]}>{props.obj.misses.length}/{props.obj.maxMisses}</Paragraph> 
       </Card.Content>
     </Card>
   );
@@ -68,6 +68,19 @@ const Main = ({ navigation, route }) => {
             obj.addPresence(new Date(Date.now()));
           }
         } // TODO: Notify if gps is not enabled
+      } else {
+        console.log("Analisando faltas");
+        let flag = false;
+        obj.intervals.forEach(interval => {
+          if (now.getDay() == interval.begin.day && (now.getHours() > interval.end.time.hour || (now.getHours() == interval.end.time.hour && now.getMinutes() > interval.end.time.minutes))) {
+            flag = true;
+          }
+        });
+        if (flag && (obj.presences.length == 0 || obj.presences[obj.presences.length - 1].getDay() != now.getDay())) {
+          if (obj.misses.length == 0 || obj.misses[obj.misses.length - 1].getDay() != now.getDay()) {
+            obj.addMiss(new Date(Date.now()));
+          }
+        }
       }
     });
   }, [position]);
