@@ -68,7 +68,7 @@ const Main = ({ navigation, route }) => {
             obj.addPresence(new Date(Date.now()));
           }
         } // TODO: Notify if gps is not enabled
-      } else {
+      } else if (obj.gpsEnabled) {
         console.log("Analisando faltas");
         let flag = false;
         obj.intervals.forEach(interval => {
