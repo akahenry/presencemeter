@@ -8,13 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import * as cls from './class';
 
-const defaultClass = new cls.Class('Português', [], true, 0, 7, {
-  latitude: 37.78825,
-  longitude: -122.4324,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-});
-
 const DeleteClass = (classes, cls) => {
   classes.splice(classes.findIndex((c,i,a) => c.id == cls.id), 1);
 }
@@ -56,14 +49,13 @@ const Main = ({ navigation, route }) => {
 
   React.useEffect(() => {
     let location = position
+    cls.Class.defaultRegion = {...location, latitudeDelta: 0.25, longitudeDelta: 0.25}
     console.log(`Checking presence at location (${location.latitude}, ${location.longitude})`);
     console.log(classes);
     classes.forEach(obj => {
       let now = new Date(Date.now());
       let intersectedTime = false;
       obj.intervals.forEach(interval => {
-        console.log(`DATA LOCA: ${interval}`);
-        console.log(`DATA certa: ${now}`);
         if (interval.inDate(now)) {
           intersectedTime = true;
         }
@@ -204,7 +196,7 @@ const Main = ({ navigation, route }) => {
       <FAB
         style={styles.fab}
         icon="plus" color="#fff"
-        onPress={() => navigation.navigate('AddClass', { onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); } })}
+        onPress={() => navigation.navigate('AddClass', { onSubmit: (obj: cls.Class = null) => { if (obj != null) setClasses(classes.concat(obj)); }, initialRegion: cls.Class.defaultRegion})}
       />
     </View>
   );

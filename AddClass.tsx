@@ -8,12 +8,7 @@ import { FormText, FormLocation, FormNumber, FormTime } from './forms';
 const AddClass = ({ route, navigation }) => {
     const [name, setName] = React.useState('');
     const [maxMisses, setMaxMisses] = React.useState(0);
-    const [region, setRegion] = React.useState({
-        latitude: 37.78825,
-        longitude: -122.4324,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-    });
+    const [region, setRegion] = React.useState(route.params.initialRegion);
     const [timeFormVisible, setTimeFormVisible] = React.useState(false);
     const [schedule, setSchedule] = React.useState([])
 
@@ -24,7 +19,7 @@ const AddClass = ({ route, navigation }) => {
             </Appbar.Header>
             <ScrollView style={styles.page}>
                 <FormText label="Nome" style={styles.formText} onChange={setName} />
-                <FormLocation label='Localização' style={styles.formText} onChange={setRegion} />
+                <FormLocation label='Localização' style={styles.formText} onChange={setRegion} defaultRegion={region}/>
                 <FormNumber label='Faltas máximas' style={[styles.formText, styles.faltasMaximas]} onChange={setMaxMisses} />
                 <FormTime visible={timeFormVisible} onAccept={(returnedTime) => setSchedule(schedule.concat(returnedTime))} setVisible={setTimeFormVisible} />
                 <List.Section>

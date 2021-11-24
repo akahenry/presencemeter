@@ -98,6 +98,17 @@ export class DayHourInterval {
 
 export class Class {
     static currentId: number = 0;
+    static defaultRegion: {
+        latitude: number,
+        longitude: number,
+        latitudeDelta: number,
+        longitudeDelta: number
+    } = {
+        latitude: 37.78825,
+        longitude: -122.4324,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    };
 
     id: number;
     name: String;
@@ -118,18 +129,13 @@ export class Class {
         longitude: number,
         latitudeDelta: number,
         longitudeDelta: number,
-    } = {
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        }) {
+    } = undefined) {
         this.name = name;
         this.intervals = intervals;
         this.gpsEnabled = gpsEnabled;
         this.misses = misses;
         this.maxMisses = maxMisses;
-        this.region = region;
+        this.region = region == undefined ? Class.defaultRegion : region;
         this.id = Class.currentId;
         this.delta = 0.01;
         this.presences = [];
